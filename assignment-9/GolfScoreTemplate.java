@@ -1,5 +1,3 @@
-package toStudent;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
@@ -8,66 +6,89 @@ import java.util.Scanner;
 public class GolfScoreTemplate {
 	final static int HOLE_NUM = 18;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		int lineCount = countLineInFile("golf-score.csv", 1);
 		String[] golfers = getGolfersFromFile("golf-score.csv", 1);
 		int[][] golfScoreList = getScoresFromFile("golf-score.csv", 1);
 		int[][] scores = calculateScore(golfScoreList);
-		int[] hc = calculateHandicap(golfScoreList);
-		printReport(lineCount, golfers, scores, hc);
-	}
-		
-	public static int countLineInFile(String filename, int headers) {
-		// count how many lines that are data, exclude headers
-		Scanner fileScanner = null;
-		int lineCount = 0;
-		// -- fill code --
-		
-		return lineCount;
+		for (int a = 0; a < scores.length; a++) {
+			System.out.println();
+			System.out.print(scores[a][0]);
+			for (int b = 1; b < HOLE_NUM + 3; b++) {
+				System.out.printf(", %d", scores[a][b]);
+			}
+		}
+
+		// int[] hc = calculateHandicap(golfScoreList);
+		// printReport(lineCount, golfers, scores, hc);
 	}
 
-	public static String[] getGolfersFromFile(String filename, int headerLines) {
-		// return array of String which contain all golfer names
-		// exclude headers
-		Scanner fileScanner = null;
+	public static int countLineInFile(String filename, int headers) throws FileNotFoundException {
+		File file = new File(filename);
+		Scanner fileScanner = new Scanner(file);
+		int lineCount = 0;
+
+		while (fileScanner.hasNextLine()) {
+			fileScanner.nextLine();
+			lineCount++;
+		}
+		return lineCount - headers - 1;
+	}
+
+	public static String[] getGolfersFromFile(String filename, int headerLines) throws FileNotFoundException {
+		File file = new File(filename);
+		Scanner fileScanner = new Scanner(file).useDelimiter("[,\r\n]");
 		int totalGolfer = countLineInFile(filename, headerLines);
 		String[] golfers = new String[totalGolfer];
-		// -- fill code --
-		
+		for (int i = 0; i <= headerLines; i++) {
+			fileScanner.nextLine();
+		}
+		for (int j = 0; j < totalGolfer; j++) {
+			golfers[j] = fileScanner.next();
+			fileScanner.nextLine();
+		}
 		return golfers;
 	}
 
-	public static int[][] getScoresFromFile(String filename, int headerLines) {
-		// return 2D array of int which:
-		//   # of rows = total gofers
-		//   # of columns = total holes (18)
-		Scanner fileScanner = null;
+	public static int[][] getScoresFromFile(String filename, int headerLines) throws FileNotFoundException {
+		File file = new File(filename);
+		Scanner fileScanner = new Scanner(file).useDelimiter("[,\r\n]");
 		int totalGolfer = countLineInFile(filename, headerLines);
 		int[][] golfScoreList = new int[totalGolfer][HOLE_NUM];
-		// -- fill code --
-		
+		fileScanner.nextLine();
+		for (int a = 0; a < totalGolfer; a++) {
+			fileScanner.nextLine();
+			fileScanner.next();
+			for (int b = 0; b < HOLE_NUM; b++) {
+				golfScoreList[a][b] = fileScanner.nextInt();
+			}
+		}
+
 		return golfScoreList;
 	}
 
 	public static int[][] calculateScore(int[][] golfScoreList){
-		// calculate:
-		//   sum(hole1 to hole9) -> out
-		//   sum(hole10 to hole18) -> in
-		//   out + in -> total
-		// then append to the end of each row
-		int[][] scoreWithTotal = new int[golfScoreList.length][HOLE_NUM+3];
-		// -- fill code --
-		
+		int[][] scoreWithTotal = new int[golfScoreList.length][HOLE_NUM + 3];
+		for (int a = 0; a < golfScoreList.length; a++) {
+			scoreWithTotal[a][HOLE_NUM] = 0;
+			scoreWithTotal[a][HOLE_NUM + 1] = 0;
+			for (int b = 0; b < HOLE_NUM; b++) {
+				scoreWithTotal[a][b] = golfScoreList[a][b];
+				if (b < HOLE_NUM / 2) scoreWithTotal[a][HOLE_NUM] += golfScoreList[a][b];
+				else scoreWithTotal[a][HOLE_NUM + 1] += golfScoreList[a][b];
+			}
+			scoreWithTotal[a][HOLE_NUM + 2] = scoreWithTotal[a][HOLE_NUM] + scoreWithTotal[a][HOLE_NUM + 1];
+		}
 		return scoreWithTotal;
 	}
-	
+
 	public static int[] calculateHandicap(int[][] scores) {
 		// return handicap of all golfers using System36 calculation
 		int[] hc = new int[scores.length-1]; // not include header
 		// -- file code --
 		return hc;
 	}
-	
+
 	private static void printReport(int lineCount, String[] golfers, int[][] scores, int[] hc) {
 		printOneRow(golfers[0], scores[0], "HC");
 		System.out.println("--------------------------------------------------------");
