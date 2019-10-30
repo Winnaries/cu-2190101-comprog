@@ -11,16 +11,8 @@ public class GolfScoreTemplate {
 		String[] golfers = getGolfersFromFile("golf-score.csv", 1);
 		int[][] golfScoreList = getScoresFromFile("golf-score.csv", 1);
 		int[][] scores = calculateScore(golfScoreList);
-		for (int a = 0; a < scores.length; a++) {
-			System.out.println();
-			System.out.print(scores[a][0]);
-			for (int b = 1; b < HOLE_NUM + 3; b++) {
-				System.out.printf(", %d", scores[a][b]);
-			}
-		}
-
-		// int[] hc = calculateHandicap(golfScoreList);
-		// printReport(lineCount, golfers, scores, hc);
+		int[] hc = calculateHandicap(golfScoreList);
+		printReport(lineCount, golfers, scores, hc);
 	}
 
 	public static int countLineInFile(String filename, int headers) throws FileNotFoundException {
@@ -32,7 +24,7 @@ public class GolfScoreTemplate {
 			fileScanner.nextLine();
 			lineCount++;
 		}
-		return lineCount - headers - 1;
+		return lineCount - headers;
 	}
 
 	public static String[] getGolfersFromFile(String filename, int headerLines) throws FileNotFoundException {
@@ -40,7 +32,7 @@ public class GolfScoreTemplate {
 		Scanner fileScanner = new Scanner(file).useDelimiter("[,\r\n]");
 		int totalGolfer = countLineInFile(filename, headerLines);
 		String[] golfers = new String[totalGolfer];
-		for (int i = 0; i <= headerLines; i++) {
+		for (int i = 0; i < headerLines; i++) {
 			fileScanner.nextLine();
 		}
 		for (int j = 0; j < totalGolfer; j++) {
@@ -55,7 +47,6 @@ public class GolfScoreTemplate {
 		Scanner fileScanner = new Scanner(file).useDelimiter("[,\r\n]");
 		int totalGolfer = countLineInFile(filename, headerLines);
 		int[][] golfScoreList = new int[totalGolfer][HOLE_NUM];
-		fileScanner.nextLine();
 		for (int a = 0; a < totalGolfer; a++) {
 			fileScanner.nextLine();
 			fileScanner.next();
@@ -83,9 +74,13 @@ public class GolfScoreTemplate {
 	}
 
 	public static int[] calculateHandicap(int[][] scores) {
-		// return handicap of all golfers using System36 calculation
-		int[] hc = new int[scores.length-1]; // not include header
-		// -- file code --
+		int[] hc = new int[scores.length - 1];
+		for (int i = 0; i < hc.length; i++) {
+			for (int j = 0; j < HOLE_NUM; j++) {
+				if (scores[i + 1][j] - scores[0][j] >= 2) hc[i] += 2;
+				else if (scores[i + 1][j] - scores[0][j] == 1) hc[i]++;
+			}
+		}
 		return hc;
 	}
 
@@ -97,7 +92,7 @@ public class GolfScoreTemplate {
 		}
 	}
 
-	public static void printOneRow(String player, int[] score, String hc){
+	public static void printOneRow(String player, int[] score, String hc) {
 		String text = "       " + player;
 		System.out.print(text.substring(text.length()-8) + ":");
 		for(int i=0; i<score.length; ++i){
