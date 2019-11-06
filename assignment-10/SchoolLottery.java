@@ -17,8 +17,13 @@ public class SchoolLottery{
 		while (input.hasNext()) {	// signals end of data
 			System.out.print("\nName" + ++studentNum + ": ");
 			String name = input.nextLine();
-			entries.add(name);
-			System.out.println(name + " entered in the lottery.");
+			if (!entries.contains(name)) {
+				entries.add(name);
+				System.out.println(name + " entered in the lottery.");
+			} else {
+				studentNum--;
+				System.out.println("The specified name is duplicate inside the list.");
+			}
 		}
 		pickWinner();
 	}
