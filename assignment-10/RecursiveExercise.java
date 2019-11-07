@@ -20,16 +20,11 @@ public class RecursiveExercise {
 	}
 	
 	public static boolean isIn(int x, int[] a) throws Exception {
-		if (a == null) return false;
-		if (x == MyArrayUtil.head(a)) return true;
-		else return isIn(x, MyArrayUtil.tail(a));
+		return (a != null) && ((x == MyArrayUtil.head(a)) || isIn(x, MyArrayUtil.tail(a)));
 	}
 	
 	public static boolean subArray(int[] a1, int[] a2) throws Exception {
-		if (a1 == null) return true;
-		int head = MyArrayUtil.head(a1);
-		int[] tail = MyArrayUtil.tail(a1);
-		return isIn(head, a2) && subArray(tail, a2);
+		return (a1 == null) || (isIn(MyArrayUtil.head(a1), a2) && subArray(MyArrayUtil.tail(a1), a2));
 	}
 	
 	public static int[] shift(int[] ht, int n) throws Exception {
