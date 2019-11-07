@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -7,9 +6,6 @@ public class SchoolLottery{
 	public SchoolLottery(){ entries = new ArrayList<>(); }
 
 	public void addStudents() throws FileNotFoundException {
-		// prompts for student names
-		// adds students to entries list
-		// allow duplicate entries
 		File file = new File("./studentList.txt");
 		Scanner input = new Scanner(file);
 		int studentNum = 0;
@@ -29,7 +25,6 @@ public class SchoolLottery{
 	}
 
 	public void pickWinner() {
-		// chooses a random entry and displays winners name
 		int numEntries = entries.size();	// size of ArrayList
 		if (numEntries == 0)
 			System.out.println("*** No participants ***");
