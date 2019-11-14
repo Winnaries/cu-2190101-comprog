@@ -11,18 +11,20 @@ public class MyCompany {
         employee1.setName("Orga");
         employee1.setSalary(70000);
 
-        if (employee1.compareTo(employee2) == -1) System.out.print("Employee2");
-        else if (employee1.compareTo(employee2) == 0) System.out.print("No one");
-        else System.out.print("Employee1");
-        System.out.println(" has more salary.");
+        System.out.print("Employee 1 has");
+        if (employee1.compareTo(employee2) == -1) System.out.print(" lower salary than ");
+        else if (employee1.compareTo(employee2) == 0) System.out.print(" equal salary to ");
+        else System.out.print(" higher salary than ");
+        System.out.println("Employee 2.");
 
         Employee employee3 = new Employee(employee2);
         employee3.promote(40000);
 
-        if (employee1.compareTo(employee3) == -1) System.out.print("Employee3");
-        else if (employee1.compareTo(employee3) == 0) System.out.print("No one");
-        else System.out.print("Employee1");
-        System.out.println(" has more salary.");
+        System.out.print("Employee 1 has");
+        if (employee1.compareTo(employee3) == -1) System.out.print(" lower salary than ");
+        else if (employee1.compareTo(employee3) == 0) System.out.print(" equal salary to ");
+        else System.out.print(" higher salary than ");
+        System.out.println("Employee 3.");
 
         System.out.println(employee1.toString());
         System.out.println(employee2.toString());

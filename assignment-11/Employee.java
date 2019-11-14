@@ -6,21 +6,21 @@ public class Employee {
     private String name;
 
     public Employee() {
-        this.id = 1;
-        this.salary = 15000;
-        this.name = "no one";
+        setId(1);
+        setSalary(15000);
+        setName("no one");
     }
 
     public Employee(int id, int salary, String name) {
-        this.id = id;
-        this.salary = salary;
-        this.name = name;
+        setId(id);
+        setSalary(salary);
+        setName(name);
     }
 
     public Employee(Employee employee) {
-        this.id = employee.id;
-        this.salary = employee.salary;
-        this.name = employee.name;
+        setId(employee.getId());
+        setSalary(employee.getSalary());
+        setName(employee.getName());
     }
 
     public int getId() { return this.id; }
@@ -44,12 +44,12 @@ public class Employee {
     }
 
     public int compareTo(Employee employee) {
-        if (this.salary == employee.salary) return 0;
-        return this.salary > employee.salary ? 1 : -1;
+        if (getSalary() == employee.getSalary()) return 0;
+        return getSalary() > employee.getSalary() ? 1 : -1;
     }
 
     public void promote(int promotion) {
-        this.salary += promotion;
+        setSalary(getSalary() + promotion);
     }
 
 }
